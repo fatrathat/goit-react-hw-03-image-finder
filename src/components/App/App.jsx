@@ -3,7 +3,7 @@ import { axiosPhotos } from 'AxiosAPI';
 
 import Searchbar from 'components/Searchbar';
 import ImageGallery from 'components/ImageGallery';
-import Modal from 'components/Modal';
+// import Modal from 'components/Modal';
 // import Button from 'components/Button';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 // import { TailSpin } from 'react-loader-spinner';
