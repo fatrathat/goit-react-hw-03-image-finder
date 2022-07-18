@@ -72,7 +72,7 @@ export class App extends Component {
           </h2>
         )}
         {status === 'pending' && <Loader />}
-        {status === 'rejected' && Notiflix.Notify.failure('Not query!')}
+        {status === 'rejected' && Notiflix.Notify.failure('Nothing to watch!')}
         <ImageGallery data={data} />
         {status === 'resolved' && <Button onClick={this.loadMore} />}
 

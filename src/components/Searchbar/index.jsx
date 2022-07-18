@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './style.module.css';
+import Notiflix from 'notiflix';
 
 import PropTypes from 'prop-types';
 
@@ -20,15 +21,16 @@ class Searchbar extends Component {
     const { searchValue } = this.state;
 
     if (searchValue.trim() === '') {
-      alert('Введите запрос!');
-      return;
+      Notiflix.Notify.info('Input query!');
     }
-
     this.props.onSubmit(searchValue);
+    this.setState({
+      searchValue: '',
+    });
   };
 
   render() {
-    const { value } = this.state;
+    const { searchValue } = this.state;
     return (
       <header className={styles.Searchbar}>
         <form className={styles.SearchForm} onSubmit={this.submitHandler}>
@@ -43,7 +45,7 @@ class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={value}
+            value={searchValue}
           />
         </form>
       </header>
