@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import { axiosPhotos } from 'AxiosAPI';
+import Notiflix from 'notiflix';
 
 import Searchbar from 'components/Searchbar';
 import ImageGallery from 'components/ImageGallery';
-import { axiosPhotos } from 'AxiosAPI';
-
 import Button from 'components/Button';
 import Loader from 'components/Loader';
-import ErrorPhotos from 'components/ErrorPhotos';
+// import ErrorPhotos from 'components/ErrorPhotos';
 
 import styles from './style.module.css';
 
@@ -15,6 +15,7 @@ export class App extends Component {
     searchInput: '',
     data: [],
     page: 1,
+    total: '',
     status: 'idle',
   };
 
@@ -32,6 +33,9 @@ export class App extends Component {
 
       axiosPhotos(searchInput, page)
         .then(res => {
+          if (res.hits.length === 0) {
+            return this.setState({ status: 'rejected' });
+          }
           const photos = res.hits.map(
             ({ id, webformatURL, largeImageURL, tags }) => {
               return { id, webformatURL, largeImageURL, tags };
@@ -58,7 +62,7 @@ export class App extends Component {
   };
 
   render() {
-    const { data, status, error } = this.state;
+    const { data, status } = this.state;
     return (
       <div className={styles.App}>
         <Searchbar onSubmit={this.submitHandler} />
@@ -68,7 +72,7 @@ export class App extends Component {
           </h2>
         )}
         {status === 'pending' && <Loader />}
-        {status === 'rejected' && <ErrorPhotos message={error.message} />}
+        {status === 'rejected' && Notiflix.Notify.failure('Not query!')}
         <ImageGallery data={data} />
         {status === 'resolved' && <Button onClick={this.loadMore} />}
 
