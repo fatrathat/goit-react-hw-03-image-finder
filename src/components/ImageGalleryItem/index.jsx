@@ -3,10 +3,10 @@ import styles from './style.module.css';
 
 class ImageGalleryItem extends Component {
   render() {
-    const { webformatURL } = this.props;
+    const { webformatURL, tags } = this.props;
     return (
       <li className={styles.ImageGalleryItem}>
-        <img src={webformatURL} alt="" />
+        <img src={webformatURL} alt={tags} />
       </li>
     );
   }

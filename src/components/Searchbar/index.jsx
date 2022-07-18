@@ -7,7 +7,7 @@ class Searchbar extends Component {
   };
 
   onChangeHandler = e => {
-    const textInput = e.target.value;
+    const textInput = e.currentTarget.value;
     this.setState({
       value: textInput,
     });
@@ -16,6 +16,12 @@ class Searchbar extends Component {
   onSubmitHandler = e => {
     e.preventDefault();
     const { value } = this.state;
+
+    if (value.trim() === '') {
+      alert('Введите запрос!');
+      return;
+    }
+    this.setState({ value: '' });
     this.props.onSubmit(value);
   };
 
@@ -28,7 +34,6 @@ class Searchbar extends Component {
           </button>
 
           <input
-            name="search"
             onChange={this.onChangeHandler}
             className={styles.SearchFormInput}
             type="text"
