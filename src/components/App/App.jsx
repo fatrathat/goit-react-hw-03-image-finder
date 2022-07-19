@@ -15,7 +15,6 @@ export class App extends Component {
     page: 1,
     total: '',
     status: 'idle',
-    showModal: false,
   };
 
   submitHandler = value => {
