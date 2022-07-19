@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { axiosPhotos } from 'AxiosAPI';
 import Notiflix from 'notiflix';
 
-import Searchbar from 'components/Searchbar';
-import ImageGallery from 'components/ImageGallery';
-import Button from 'components/Button';
-import Loader from 'components/Loader';
-// import ErrorPhotos from 'components/ErrorPhotos';
+import Searchbar from 'components/Searchbar/Searchbar';
+import ImageGallery from 'components/ImageGallery/ImageGallery';
+import Button from 'components/Button/Button';
+import Loader from 'components/Loader/Loader';
 
 import styles from './style.module.css';
-
 export class App extends Component {
   state = {
     searchInput: '',
@@ -17,12 +15,20 @@ export class App extends Component {
     page: 1,
     total: '',
     status: 'idle',
+    showModal: false,
   };
 
   submitHandler = value => {
     this.setState({
       searchInput: value,
     });
+    this.setState({ data: [], page: 1 });
+  };
+
+  onShowModal = () => {
+    this.setState(prev => ({
+      showModal: !prev.showModal,
+    }));
   };
 
   componentDidUpdate(prevP, prevS) {
@@ -44,16 +50,13 @@ export class App extends Component {
 
           this.setState(prev => ({
             data: [...prev.data, ...photos],
+            total: res.total,
             status: 'resolved',
           }));
         })
         .catch(error => {
           this.setState({ error, status: 'rejected' });
         });
-    }
-
-    if (prevS.searchInput !== searchInput) {
-      this.setState({ data: [], page: 1 });
     }
   }
 
@@ -62,7 +65,7 @@ export class App extends Component {
   };
 
   render() {
-    const { data, status } = this.state;
+    const { data, status, total, showModal } = this.state;
     return (
       <div className={styles.App}>
         <Searchbar onSubmit={this.submitHandler} />
@@ -73,8 +76,14 @@ export class App extends Component {
         )}
         {status === 'pending' && <Loader />}
         {status === 'rejected' && Notiflix.Notify.failure('Nothing to watch!')}
-        <ImageGallery data={data} />
-        {status === 'resolved' && <Button onClick={this.loadMore} />}
+        <ImageGallery
+          data={data}
+          modal={showModal}
+          showModal={this.onShowModal}
+        />
+        {status === 'resolved' && total !== data.length && (
+          <Button onClick={this.loadMore} />
+        )}
 
         {/* <Modal /> */}
       </div>

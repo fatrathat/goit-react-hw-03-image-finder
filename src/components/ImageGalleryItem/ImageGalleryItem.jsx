@@ -2,23 +2,15 @@ import React, { Component } from 'react';
 import styles from './style.module.css';
 import PropTypes from 'prop-types';
 
-import Modal from 'components/Modal';
+import Modal from 'components/Modal/Modal';
 
 class ImageGalleryItem extends Component {
-  state = {
-    show: false,
-  };
-
   showModal = () => {
-    this.setState(prev => ({
-      show: !prev.show,
-    }));
+    this.props.show();
   };
 
   render() {
-    const { webformatURL, largeImageURL, tags } = this.props;
-    const { show } = this.state;
-
+    const { webformatURL, largeImageURL, tags, modal } = this.props;
     return (
       <li className={styles.ImageGalleryItem} onClick={this.showModal}>
         <img
@@ -26,7 +18,7 @@ class ImageGalleryItem extends Component {
           alt={tags}
           className={styles.ImageGalleryItemImage}
         />
-        {show && (
+        {modal && (
           <Modal img={largeImageURL} tags={tags} onClick={this.showModal} />
         )}
       </li>
