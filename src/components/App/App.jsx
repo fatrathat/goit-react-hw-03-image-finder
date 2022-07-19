@@ -25,12 +25,6 @@ export class App extends Component {
     this.setState({ data: [], page: 1 });
   };
 
-  onShowModal = () => {
-    this.setState(prev => ({
-      showModal: !prev.showModal,
-    }));
-  };
-
   componentDidUpdate(prevP, prevS) {
     const { searchInput, page } = this.state;
 
@@ -65,7 +59,7 @@ export class App extends Component {
   };
 
   render() {
-    const { data, status, total, showModal } = this.state;
+    const { data, status, total } = this.state;
     return (
       <div className={styles.App}>
         <Searchbar onSubmit={this.submitHandler} />
@@ -76,16 +70,10 @@ export class App extends Component {
         )}
         {status === 'pending' && <Loader />}
         {status === 'rejected' && Notiflix.Notify.failure('Nothing to watch!')}
-        <ImageGallery
-          data={data}
-          modal={showModal}
-          showModal={this.onShowModal}
-        />
+        <ImageGallery data={data} showModal={this.onShowModal} />
         {status === 'resolved' && total !== data.length && (
           <Button onClick={this.loadMore} />
         )}
-
-        {/* <Modal /> */}
       </div>
     );
   }

@@ -5,21 +5,32 @@ import PropTypes from 'prop-types';
 import Modal from 'components/Modal/Modal';
 
 class ImageGalleryItem extends Component {
-  showModal = () => {
-    this.props.show();
+  state = {
+    showModal: false,
+  };
+
+  onModalHandler = () => {
+    this.setState(prev => ({
+      showModal: !prev.showModal,
+    }));
   };
 
   render() {
-    const { webformatURL, largeImageURL, tags, modal } = this.props;
+    const { webformatURL, largeImageURL, tags } = this.props;
+    const { showModal } = this.state;
     return (
-      <li className={styles.ImageGalleryItem} onClick={this.showModal}>
+      <li className={styles.ImageGalleryItem} onClick={this.onModalHandler}>
         <img
           src={webformatURL}
           alt={tags}
           className={styles.ImageGalleryItemImage}
         />
-        {modal && (
-          <Modal img={largeImageURL} tags={tags} onClick={this.showModal} />
+        {showModal && (
+          <Modal
+            img={largeImageURL}
+            tags={tags}
+            onClick={this.onModalHandler}
+          />
         )}
       </li>
     );
